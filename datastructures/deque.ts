@@ -21,19 +21,11 @@ export class Deque<T> {
     return this.head - this.tail - 1
   }
 
-  get front(): T | undefined {
-    if (this.isEmpty()) {
-      return undefined
-    }
-
+  get front(): T {
     return this.items[this.tail + 1]
   }
 
-  get back(): T | undefined {
-    if (this.isEmpty()) {
-      return undefined
-    }
-
+  get back(): T {
     return this.items[this.head - 1]
   }
 
@@ -60,26 +52,31 @@ export class Deque<T> {
   }
 
   public remove(): T | undefined {
-    if (this.isEmpty()) {
-      return undefined
-    }
+    if (this.isEmpty()) return undefined
 
     this.head--
     const item = this.items[this.head]
     delete this.items[this.head]
 
+    if (this.isEmpty()) this.resetHeadAndTail()
+
     return item
   }
 
   public removeFront(): T | undefined {
-    if (this.isEmpty()) {
-      return undefined
-    }
+    if (this.isEmpty()) return undefined
 
     this.tail++
     const item = this.items[this.tail]
     delete this.items[this.tail]
 
+    if (this.isEmpty()) this.resetHeadAndTail()
+
     return item
+  }
+
+  private resetHeadAndTail() {
+    this.head = 1
+    this.tail = 0
   }
 }

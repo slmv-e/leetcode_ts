@@ -45,4 +45,16 @@ describe('testing deque data structure', () => {
 
     expect(instance.size).toBe(array.length - 2)
   })
+
+  test('test method calls chain', () => {
+    const instance = new Deque<number>()
+
+    instance.push(40).push(50).push(60)
+    instance.pushFront(30).pushFront(20).pushFront(10)
+
+    expect(instance.size).toBe(6)
+
+    expect(instance.back).toBe(60)
+    expect(instance.front).toBe(10)
+  })
 })
