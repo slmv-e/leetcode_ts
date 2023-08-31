@@ -23,15 +23,7 @@
     Memory: O(n), where "n" is maximum length of input arrays
 */
 
-class ListNode {
-  public val: number
-  public next: ListNode | null
-
-  constructor(val?: number, next?: ListNode | null) {
-    this.val = val === undefined ? 0 : val
-    this.next = next === undefined ? null : next
-  }
-}
+import { ListNode } from '../datastructures/linkedList'
 
 function addTwoNumbers(firstList: ListNode, secondList: ListNode): ListNode {
   const cutUnitDigit = (val: number) => Math.floor(val / 10)

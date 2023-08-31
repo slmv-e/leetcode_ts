@@ -20,7 +20,7 @@
 /*
   Solution:
     Time: O(n * k), where n - words array length, k - length of longest word
-    Memory: O(1) (not sure)
+    Memory: O(1)
 */
 
 function longestCommonPrefix(words: string[]): string {
