@@ -27,7 +27,7 @@ describe('testing deque data structure', () => {
     expect(instance.front).toBe(array[0])
     expect(instance.back).toBe(array.at(-1))
 
-    expect(instance.size).toBe(array.length)
+    expect(instance.length).toBe(array.length)
   })
 
   test('test remove methods', () => {
@@ -43,7 +43,7 @@ describe('testing deque data structure', () => {
     expect(instance.front).toBe(array[1])
     expect(instance.back).toBe(array.at(-2))
 
-    expect(instance.size).toBe(array.length - 2)
+    expect(instance.length).toBe(array.length - 2)
   })
 
   test('test method calls chain', () => {
@@ -52,7 +52,7 @@ describe('testing deque data structure', () => {
     instance.push(40).push(50).push(60)
     instance.pushFront(30).pushFront(20).pushFront(10)
 
-    expect(instance.size).toBe(6)
+    expect(instance.length).toBe(6)
 
     expect(instance.back).toBe(60)
     expect(instance.front).toBe(10)

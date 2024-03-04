@@ -1,12 +1,20 @@
+class DequeNode<T> {
+  constructor(
+    public value: T,
+    public prev: DequeNode<T> | null,
+    public next: DequeNode<T> | null,
+  ) {}
+}
+
 export class Deque<T> {
-  private head: number
-  private tail: number
-  private readonly items: Record<number, T>
+  private head: DequeNode<T> | null
+  private tail: DequeNode<T> | null
+  private size: number
 
   constructor(inputArray: T[] = []) {
-    this.head = 1
-    this.tail = 0
-    this.items = {}
+    this.head = null
+    this.tail = null
+    this.size = 0
 
     inputArray.forEach((item) => {
       this.push(item)
@@ -17,16 +25,20 @@ export class Deque<T> {
     return new Deque<T>(inputArray)
   }
 
-  get size(): number {
-    return this.head - this.tail - 1
+  get length(): number {
+    return this.size
   }
 
-  get front(): T {
-    return this.items[this.tail + 1]
+  get front(): T | undefined {
+    return this.head?.value
   }
 
-  get back(): T {
-    return this.items[this.head - 1]
+  get back(): T | undefined {
+    if (this.size === 1) {
+      return this.head?.value
+    }
+
+    return this.tail?.value
   }
 
   public isEmpty(): boolean {
@@ -34,49 +46,86 @@ export class Deque<T> {
   }
 
   public push(item: T) {
-    this.items[this.head] = item
-    this.head++
+    if (this.size === 0) {
+      this.head = new DequeNode(item, null, null)
+    } else if (this.size === 1) {
+      this.tail = new DequeNode(item, this.head, null)
+      if (this.head !== null) this.head.next = this.tail
+    } else {
+      const newNode = new DequeNode(item, this.tail, null)
 
+      if (this.tail !== null) {
+        this.tail.next = newNode
+      }
+
+      this.tail = newNode
+    }
+
+    this.size++
     return this
   }
 
   public pushFront(item: T) {
-    if (this.isEmpty()) {
-      this.push(item)
+    if (this.size === 0) {
+      this.head = new DequeNode(item, null, null)
+    } else if (this.size === 1) {
+      this.tail = this.head
+      this.head = new DequeNode(item, null, this.head)
     } else {
-      this.items[this.tail] = item
-      this.tail--
+      const newNode = new DequeNode(item, null, this.head)
+
+      if (this.head !== null) {
+        this.head.prev = newNode
+      }
+
+      this.head = newNode
     }
 
+    this.size++
     return this
   }
 
   public remove(): T | undefined {
     if (this.isEmpty()) return undefined
 
-    this.head--
-    const item = this.items[this.head]
-    delete this.items[this.head]
+    if (this.size === 1) {
+      const node = this.head
+      this.head = null
+      return node?.value
+    }
 
-    if (this.isEmpty()) this.resetHeadAndTail()
+    const node = this.tail
 
-    return item
+    if (
+      this.tail === null ||
+      this.head === null ||
+      node === null ||
+      node.prev === null
+    )
+      return undefined
+
+    if (this.size === 2) {
+      this.tail = this.head.next = null
+    } else {
+      this.tail = node.prev
+      this.tail.next = null
+    }
+
+    this.size--
+    return node.value
   }
 
   public removeFront(): T | undefined {
     if (this.isEmpty()) return undefined
 
-    this.tail++
-    const item = this.items[this.tail]
-    delete this.items[this.tail]
+    const node = this.head
 
-    if (this.isEmpty()) this.resetHeadAndTail()
+    if (node === null || node.next === null) return undefined
 
-    return item
-  }
+    this.head = node.next
+    this.head.prev = null
 
-  private resetHeadAndTail() {
-    this.head = 1
-    this.tail = 0
+    this.size--
+    return node.value
   }
 }
